@@ -3,6 +3,7 @@
 
   var clock = new THREE.Clock();
   var sphere = null;
+  var deviceOrientationControls = null;
 
   var renderer = new THREE.WebGLRenderer();
   var element = renderer.domElement;
@@ -38,8 +39,8 @@
   camera.position.set( -10, 10, 0 );
   scene.add( camera );
 
-  var controls = new THREE.OrbitControls( camera, element );
-  controls.target.set(
+  var orbitControls = new THREE.OrbitControls( camera, element );
+  orbitControls.target.set(
     camera.position.x + 0.1,
     camera.position.y,
     camera.position.z
@@ -50,9 +51,9 @@
       return;
     }
 
-    var controls = new THREE.DeviceOrientationControls( camera, true );
-    controls.connect();
-    controls.update();
+    deviceOrientationControls = new THREE.DeviceOrientationControls( camera, true );
+    deviceOrientationControls.connect();
+    deviceOrientationControls.update();
 
     element.addEventListener( 'click', fullscreen, false );
 
@@ -138,7 +139,7 @@
 
     camera.updateProjectionMatrix();
 
-    controls.update( dt );
+    deviceOrientationControls.update( dt );
 
     if ( sphere ) {
       sphere.position.x = Math.sin( Date.now() / 1000 ) * 200 + 300;
