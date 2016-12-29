@@ -1,4 +1,5 @@
 (function() {
+  'use strict';
 
   var clock = new THREE.Clock();
   var sphere = null;
@@ -18,8 +19,16 @@
 
     scene.add( sphere );
   };
+
+  var pointerUp = function( event ) {
+    console.log( 'bye' );
+  };
+
   element.addEventListener( 'mousedown', pointerDown, false );
   element.addEventListener( 'touchstart', pointerDown, false );
+
+  element.addEventListener( 'mouseup', pointerUp, false );
+  element.addEventListener( 'touchend', pointerUp, false );
 
   var effect = new THREE.StereoEffect( renderer );
 
@@ -55,7 +64,6 @@
 
   window.addEventListener( 'deviceorientation', setOrientationControls, true );
 
-
   var light = new THREE.HemisphereLight( 0x777777, 0x000000, 0.6 );
   scene.add( light );
 
@@ -81,7 +89,7 @@
   mesh.rotation.x = -Math.PI / 2;
   scene.add( mesh );
 
-  const sphereMaterial = new THREE.MeshLambertMaterial( {
+  var sphereMaterial = new THREE.MeshLambertMaterial( {
     color: 0xCC00FF
   } );
 
