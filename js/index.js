@@ -245,10 +245,26 @@
 
     console.log( intersects.length );
 
+    for ( i = 0; i < scene.children.length; i++ ) {
+      var object = scene.children[ i ];
+      object.lookingAtIt = false;
+
+      // if ( object.material && object.material.color && object.originalColor === undefined ) {
+      //   object.originalColor = object.material.color;
+      // }
+    }
     for ( i = 0; i < intersects.length; i++ ) {
+      object = intersects[ i ].object;
+      object.lookingAtIt = true;
+    }
 
-      intersects[ i ].object && intersects[ i ].object.material && intersects[ i ].object.material.color && intersects[ i ].object.material.color.set( 0xff0000 );
-
+    for ( i = 0; i < scene.children.length; i++ ) {
+      object = scene.children[ i ];
+      // object.visible = !object.lookingAtIt;
+      //
+      // object.traverse( function( child ) {
+      //   child.visible = !object.lookingAtIt;
+      // } );
     }
   }
 
