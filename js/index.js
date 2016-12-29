@@ -2,23 +2,30 @@
   'use strict';
 
   var clock = new THREE.Clock();
-  var sphere = null;
+  var bullets = [];
   var deviceOrientationControls = null;
 
   var renderer = new THREE.WebGLRenderer();
   var element = renderer.domElement;
   var container = document.getElementById( 'example' );
+
+  var camera = new THREE.PerspectiveCamera( 90, 1, 0.001, 700 );
+  camera.position.set( -10, 10, 0 );
+
   container.appendChild( element );
 
   var pointerDown = function( event ) {
     console.log( 'hello' );
     event.preventDefault();
 
-    sphere = new THREE.Mesh( new THREE.SphereGeometry( 30 ), sphereMaterial );
-    sphere.position.x = 100 + 20;
-    sphere.position.y = 40;
+    var bullet = new THREE.Mesh( new THREE.SphereGeometry( 10 ), sphereMaterial );
+    bullet.velocity = camera.getWorldDirection().normalize().multiplyScalar( 100 );
+    bullet.position.x = camera.position.x;
+    bullet.position.y = camera.position.y;
+    bullet.position.z = camera.position.z;
 
-    scene.add( sphere );
+    scene.add( bullet );
+    bullets.push( bullet );
   };
 
   var pointerUp = function( event ) {
@@ -34,12 +41,9 @@
   var effect = new THREE.StereoEffect( renderer );
 
   var scene = new THREE.Scene();
-
-  var camera = new THREE.PerspectiveCamera( 90, 1, 0.001, 700 );
-  camera.position.set( -10, 10, 0 );
   scene.add( camera );
-
   var orbitControls = new THREE.OrbitControls( camera, element );
+
   orbitControls.target.set(
     camera.position.x + 0.1,
     camera.position.y,
@@ -139,11 +143,13 @@
 
     camera.updateProjectionMatrix();
 
-    deviceOrientationControls.update( dt );
+    deviceOrientationControls && deviceOrientationControls.update( dt );
 
-    if ( sphere ) {
-      sphere.position.x = Math.sin( Date.now() / 1000 ) * 200 + 300;
-      sphere.position.z = Math.cos( Date.now() / 2730 ) * 200 + 100;
+    for ( var i = 0; i < bullets.length; i++ ) {
+      var bullet = bullets[ i ];
+      bullet.position.x = bullet.position.x + bullet.velocity.x * dt;
+      bullet.position.y = bullet.position.y + bullet.velocity.y * dt;
+      bullet.position.z = bullet.position.z + bullet.velocity.z * dt;
     }
 
     octaminatorAnimation && octaminatorAnimation.setTime( performance.now() / 1000 );
