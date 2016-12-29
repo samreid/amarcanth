@@ -127,8 +127,7 @@
     }
   } );
 
-  var mtlLoader = new THREE.MTLLoader();
-  mtlLoader.load( 'models/Oak_Green_01.mtl', function( treeMaterials ) {
+  new THREE.MTLLoader().load( 'models/Oak_Green_01.mtl', function( treeMaterials ) {
     treeMaterials.preload();
     var objLoader = new THREE.OBJLoader();
     objLoader.setMaterials( treeMaterials );
@@ -151,6 +150,35 @@
 
     console.log( 'got tree' );
   } );
+  // new THREE.ColladaLoader().load( 'models/turkeyleg.dae', function( collada ) {
+  //
+  //   var dae = collada.scene;
+  //   dae.updateMatrix();
+  //   dae.position.x = 3;
+  //   dae.scale.x = 2;
+  //   dae.scale.y = 2;
+  //   dae.scale.z = 2;
+  //   scene.add( dae );
+  // } );
+
+  new THREE.MTLLoader().load( 'models/stone_axe.mtl', function( material ) {
+    material.preload();
+    var objLoader2 = new THREE.OBJLoader();
+    objLoader2.setMaterials( material );
+    objLoader2.load( 'models/stone_axe.obj', function( axe ) {
+
+      axe.position.x = -10;
+      axe.position.z = 5;
+      axe.position.y = 0.05;
+      var scale = 20;
+      axe.scale.x = scale;
+      axe.scale.y = scale;
+      axe.scale.z = scale;
+      scene.add( axe );
+    } );
+
+    console.log( 'got tree' );
+  } );
 
 
   var axisHelper = new THREE.AxisHelper( 5 );
@@ -160,8 +188,8 @@
   ambient.position.set( 0, 1, 0 );
   scene.add( ambient );
 
-  var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
-  light.position.set( 0, 4, 4 ).normalize();
+  var light = new THREE.DirectionalLight( 0xffffff, 0.6 );
+  light.position.set( 0, 40, 40 );
   scene.add( light );
 
   animate();
