@@ -27,14 +27,13 @@
   };
   var isPointerDown = false;
   var pointerDown = function( event ) {
-    console.log( 'hello' );
     event.preventDefault();
 
+    createBullet();
     isPointerDown = true;
   };
 
   var pointerUp = function( event ) {
-    console.log( 'bye' );
     isPointerDown = false;
     event.preventDefault();
   };
@@ -211,10 +210,6 @@
     camera.updateProjectionMatrix();
 
     deviceOrientationControls && deviceOrientationControls.update( dt );
-
-    if ( isPointerDown ) {
-      createBullet();
-    }
 
     var gravity = -9.8;
     for ( var i = 0; i < bullets.length; i++ ) {
