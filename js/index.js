@@ -25,6 +25,12 @@
     scene.add( bullet );
     bullets.push( bullet );
   };
+
+  var raycaster = new THREE.Raycaster();
+
+  // Simulate the mouse at the center of the screen, so you must be looking directly at something.
+  var mouse = new THREE.Vector2();
+
   var isPointerDown = false;
   var pointerDown = function( event ) {
     event.preventDefault();
@@ -202,6 +208,9 @@
 
     renderer.setSize( width, height );
     effect.setSize( width, height );
+
+    mouse.x = 0;
+    mouse.y = 0;
   }
 
   function update( dt ) {
@@ -226,6 +235,20 @@
 
     for ( i = 0; i < octaminatorAnimations.length; i++ ) {
       octaminatorAnimations[ i ].setTime( performance.now() / 1000 );
+    }
+
+    // update the picking ray with the camera and mouse position
+    raycaster.setFromCamera( mouse, camera );
+
+    // calculate objects intersecting the picking ray
+    var intersects = raycaster.intersectObjects( scene.children, true );
+
+    console.log( intersects.length );
+
+    for ( i = 0; i < intersects.length; i++ ) {
+
+      intersects[ i ].object && intersects[ i ].object.material && intersects[ i ].object.material.color && intersects[ i ].object.material.color.set( 0xff0000 );
+
     }
   }
 
