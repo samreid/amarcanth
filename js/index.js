@@ -122,10 +122,36 @@
         object.scale.y = scale;
         object.scale.z = scale;
         scene.add( object );
-        octaminatorAnimations.push( result.animation.clone() );
+        octaminatorAnimations.push( result.animation );
       }
     }
   } );
+
+  var mtlLoader = new THREE.MTLLoader();
+  mtlLoader.load( 'models/Oak_Green_01.mtl', function( treeMaterials ) {
+    treeMaterials.preload();
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials( treeMaterials );
+    objLoader.load( 'models/Oak_Green_01.obj', function( treeX ) {
+
+      for ( var i = 0; i < 10; i++ ) {
+        for ( var k = 0; k < 10; k++ ) {
+          var tree = treeX.clone();
+
+          tree.position.x = -30 + k * 30;
+          tree.position.z = i * 30;
+          var scale = 6;
+          tree.scale.x = scale;
+          tree.scale.y = scale;
+          tree.scale.z = scale;
+          scene.add( tree );
+        }
+      }
+    } );
+
+    console.log( 'got tree' );
+  } );
+
 
   var axisHelper = new THREE.AxisHelper( 5 );
   scene.add( axisHelper );
@@ -134,7 +160,7 @@
   ambient.position.set( 0, 1, 0 );
   scene.add( ambient );
 
-  var light = new THREE.DirectionalLight( 0xffffff, 1 );
+  var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
   light.position.set( 0, 4, 4 ).normalize();
   scene.add( light );
 
