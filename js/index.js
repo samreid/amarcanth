@@ -14,22 +14,29 @@
 
   container.appendChild( element );
 
-  var pointerDown = function( event ) {
-    console.log( 'hello' );
-    event.preventDefault();
-
-    var bullet = new THREE.Mesh( new THREE.SphereGeometry( 10 ), sphereMaterial );
+  var createBullet = function() {
+    var bullet = new THREE.Mesh( new THREE.SphereGeometry( 2 ), sphereMaterial );
     bullet.velocity = camera.getWorldDirection().normalize().multiplyScalar( 100 );
-    bullet.position.x = camera.position.x;
-    bullet.position.y = camera.position.y;
-    bullet.position.z = camera.position.z;
+    var step = 0.1;
+    bullet.position.x = camera.position.x + bullet.velocity.x * step;
+    bullet.position.y = camera.position.y + bullet.velocity.y * step;
+    bullet.position.z = camera.position.z + bullet.velocity.z * step;
 
     scene.add( bullet );
     bullets.push( bullet );
   };
+  var isPointerDown = false;
+  var pointerDown = function( event ) {
+    console.log( 'hello' );
+    event.preventDefault();
+
+    isPointerDown = true;
+  };
 
   var pointerUp = function( event ) {
     console.log( 'bye' );
+    isPointerDown = false;
+    event.preventDefault();
   };
 
   element.addEventListener( 'mousedown', pointerDown, false );
@@ -144,6 +151,10 @@
     camera.updateProjectionMatrix();
 
     deviceOrientationControls && deviceOrientationControls.update( dt );
+
+    if ( isPointerDown ) {
+      createBullet();
+    }
 
     for ( var i = 0; i < bullets.length; i++ ) {
       var bullet = bullets[ i ];
