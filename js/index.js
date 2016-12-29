@@ -103,22 +103,28 @@
   setTimeout( resize, 1 );
 
   var loader = new THREE.AssimpLoader();
-  var octaminatorAnimation = null;
+  var octaminatorAnimations = [];
   loader.load( '../three.js/examples/models/assimp/octaminator/Octaminator.assimp', function( err, result ) {
 
-    var object = result.object;
+    if ( err ) {
+      console.log( 'err: ' + err );
+    }
+    else if ( result ) {
+      for ( var i = 0; i < 1; i++ ) {
+        var object = result.object;
 
-    object.position.x = 20;
-    object.position.y = 13;
-    object.rotation.x = 0;
-    object.rotation.y = Math.PI / 2 + Math.PI / 12;
-    var scale = 0.05;
-    object.scale.x = scale;
-    object.scale.y = scale;
-    object.scale.z = scale;
-    scene.add( object );
-
-    octaminatorAnimation = result.animation;
+        object.position.x = 20 * (i + 1);
+        object.position.y = 13;
+        object.rotation.x = 0;
+        object.rotation.y = Math.PI / 2 + Math.PI / 12;
+        var scale = 0.05;
+        object.scale.x = scale;
+        object.scale.y = scale;
+        object.scale.z = scale;
+        scene.add( object );
+        octaminatorAnimations.push( result.animation.clone() );
+      }
+    }
   } );
 
   var axisHelper = new THREE.AxisHelper( 5 );
@@ -156,8 +162,10 @@
       createBullet();
     }
 
+    var gravity = -9.8;
     for ( var i = 0; i < bullets.length; i++ ) {
       var bullet = bullets[ i ];
+      bullet.velocity.y = bullet.velocity.y + 1 / 2 * gravity * dt;
       bullet.position.x = bullet.position.x + bullet.velocity.x * dt;
       bullet.position.y = bullet.position.y + bullet.velocity.y * dt;
       bullet.position.z = bullet.position.z + bullet.velocity.z * dt;
@@ -167,7 +175,9 @@
       }
     }
 
-    octaminatorAnimation && octaminatorAnimation.setTime( performance.now() / 1000 );
+    for ( i = 0; i < octaminatorAnimations.length; i++ ) {
+      octaminatorAnimations[ i ].setTime( performance.now() / 1000 );
+    }
   }
 
   function render( dt ) {
