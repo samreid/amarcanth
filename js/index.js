@@ -97,7 +97,7 @@
 
     var object = result.object;
 
-    object.position.x = 30;
+    object.position.x = 20;
     object.position.y = 13;
     object.rotation.x = 0;
     object.rotation.y = Math.PI / 2 + Math.PI / 12;
