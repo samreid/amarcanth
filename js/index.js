@@ -161,6 +161,10 @@
       bullet.position.x = bullet.position.x + bullet.velocity.x * dt;
       bullet.position.y = bullet.position.y + bullet.velocity.y * dt;
       bullet.position.z = bullet.position.z + bullet.velocity.z * dt;
+
+      if ( bullet.position.y <= 0 ) {
+        bullet.velocity.y = Math.abs( bullet.velocity.y );
+      }
     }
 
     octaminatorAnimation && octaminatorAnimation.setTime( performance.now() / 1000 );
