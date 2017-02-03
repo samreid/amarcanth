@@ -109,7 +109,7 @@
 
   var loader = new THREE.AssimpLoader();
   var octaminatorAnimations = [];
-  loader.load( '../three.js/examples/models/assimp/octaminator/Octaminator.assimp', function( err, result ) {
+  loader.load( 'assets/octaminator/Octaminator.assimp', function( err, result ) {
 
     if ( err ) {
       console.log( 'err: ' + err );
